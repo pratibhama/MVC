@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html ng-app="BusReservationApp" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title></title>
+</head>
+
+
+<body ng-controller="BusController as busCtrl">
+
+
+    <div ng-repeat="bus in busCtrl.items">
+      
+            <span ng-bind="bus.BusID"></span>
+        
+    </div>
+    <div>
+        <form name="addForm">
+            <table>
+                <tr>
+                    <td>
+                        Source
+                    </td>
+                    <td>
+                        <input type="text"
+                               placeholder="Source"
+                               data-ng-model="busCtrl.newBus.Source"
+                               required>
+                    </td>
+                </tr>
+
+                <!--<br />-->
+                <tr>
+                    <td>Destination</td>
+                    <td>
+                        <input type="text"
+                               placeholder="Destination"
+                               data-ng-model="busCtrl.newBus.Destination"
+                               required>
+                    </td>
+                </tr>
+                <!--<br />-->
+
+                <tr>
+                    <td>Company Name </td>
+                    <td>
+                        <input type="text"
+                               placeholder="CompanyName"
+                               data-ng-model="busCtrl.newBus.CompanyName"
+                               required>
+                    </td>
+                </tr>
+                <!--<br />-->
+
+                <tr>
+                    <td>
+                        Category
+                    </td>
+                    <td>
+                        <input type="text"
+                               placeholder="Category"
+                               data-ng-model="busCtrl.newBus.Category"
+                               required>
+                    </td>
+                </tr>
+                <!--<br />-->
+                <tr>
+                    <td>
+                        Arrival Time
+                    </td>
+                    <td>
+                        <input type="text"
+                               placeholder="ArrivalTime"
+                               data-ng-model="busCtrl.newBus.ArrivalTime"
+                               required>
+                    </td>
+                </tr>
+                <!--<br />-->
+                <tr>
+                    <td>
+                        Departure Time
+                    </td>
+                    <td>
+                        <input type="text"
+                               placeholder="DepartureTime"
+                               data-ng-model="busCtrl.newBus.DepartureTime"
+                               required>
+                    </td>
+                </tr>
+                <!--<br />-->
+                <tr>
+                    <td>
+                        Bus Available on Days
+                    </td>
+                    <td>
+                        <input type="text"
+                               placeholder="BusAvailable"
+                               data-ng-model="busCtrl.newBus.BusAvailable"
+                               required>
+                    </td>
+                </tr>
+                <!--<br />-->
+                <tr>
+                    <td>
+                        Distance
+                    </td>
+                    <td>
+                        <input type="text"
+                               placeholder="Distance"
+                               data-ng-model="busCtrl.newBus.Distance"
+                               required>
+                    </td>
+                </tr>
+                <!--<br />-->
+
+            </table>
+            <button ng-click="busCtrl.add(busCtrl.newBus)">
+                Add
+            </button>
+
+            <!--<input type="submit"
+            value="Add"
+            ng-disabled="addForm.$invalid">-->
+        </form>
+
+    </div>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.11/angular.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular-route.js"></script>
+
+
+
+    <script>
+        angular.module('BusReservationApp', [])
+          .controller('BusController', function ($http,$scope) {
+              //var self = this;
+              console.log("inside controller");
+              var config = {
+                  headers: {
+                      'content-type': 'application/json'
+                  }
+              }
+
+              //self.items = [];
+
+              //self.newBus = {
+              //    "Source": "Abad",
+              //    "Destination": "Goa",
+              //    "BusAvailable": "Monday",
+              //    "ArrivalTime": "9.0",
+              //    "DepartureTime": "10.0",
+              //    "CompanyName": "J",
+              //    "Category": "Ac",
+              //    "Distance": 800,
+              //    "Capacity": 40
+              //};
+
+              //var fetchBus = function () {
+              //    return $http.get('http://localhost:53346/api/Bus/GetBuses').then(
+              //        function (response) {
+              //            self.items = response.data;
+              //        }, function (errResponse) {
+              //            console.error('Error while fetching');
+              //        });
+              //};
+
+              //fetchBus();
+
+              //$http({
+              //    url: '/api/Bus',
+              //    method: 'POST',
+              //    data: self.newBus,
+              //    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+              //}).
+
+
+              $http.post('http://localhost:53346/api/Bus/PostBus', jigi, config)
+                                                                          .then(
+                                           function (response) {
+                                               // success callback
+                                               self.add(jigi);
+                                               alert('record added');
+
+                                           },
+                                                       function (response) {
+                                                           // failure callback
+                                                           alert('book is not added');
+                                                       });
+              self.add = function (newBus) {
+
+                  console.log("bus=" + newBus.Source);
+                  console.log("bus capacity=" + newBus.Capacity);
+                  var jigi = newBus;
+                  //var jigi = {
+                  //    Source: 'Abad',
+                  //    Destination: 'Goa',
+                  //    BusAvailable: 'Monday',
+                  //    ArrivalTime: '9.0',
+                  //    DepartureTime: '10.0',
+                  //    CompanyName: 'J',
+                  //    Category: 'Ac',
+                  //    Distance: 800,
+                  //    Capacity: 40
+
+                  //}
+               
+                  $scope.Destination = 'Goa';
+                  $scope.Source = 'Abad';
+                 
+                  $scope.BusAvailable = 'Monday';
+                  $scope.ArrivalTime = '9.0';
+                  $scope.DepartureTime = '10.0';
+                  $scope.CompanyName = 'Khurana';
+                  $scope.Category = 'AC';
+                  $scope.Distance = 100;
+                  $scope.Capacity = 40;
+                  
+              }
+          });
+
+
+                  //$http({
+                  //    url: "http://localhost:53346/api/Bus/PostBus",
+                  //    method: "POST",
+                  //    data: jigi,
+                  //    headers: { 'Content-Type': 'application/json' },
+
+                  //})
+                  //.then(fetchBus)
+                  //            .then(function () {
+                  //                self.add(newBus);
+                  //                //self.newBus = {};
+                  //                alert("record added");
+                  //            });
+                  //    };
+
+              //}]);
+    </script>
+</body>
+</html>

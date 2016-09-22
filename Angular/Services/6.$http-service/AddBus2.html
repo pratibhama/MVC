@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>
+        AngularJs $http.post() Service Response Example
+    </title>
+
+    <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular.min.js">
+
+    </script>
+
+    <script type="text/javascript">
+
+        var app = angular.module('BusReservationApp', []);
+        app.controller('BusController', function ($scope, $http) {
+            $scope.Destination = null;
+            $scope.Source = null;
+
+            $scope.BusAvailable = null;
+            $scope.ArrivalTime = null;
+            $scope.DepartureTime = null;
+            $scope.CompanyName = null;
+            $scope.Category = null;
+            $scope.Distance = null;
+            $scope.Capacity = null;
+
+            $scope.postdata = function (Source,Destination,BusAvailable,ArrivalTime,DepartureTime,CompanyName,Category,Distance,Capacity) {
+                var data = {
+                    Source:Source,
+                    Destination: Destination,
+                    BusAvailable: BusAvailable,
+                    ArrivalTime: ArrivalTime,
+                    DepartureTime: DepartureTime,
+                    CompanyName:CompanyName,
+                    Category:Category,
+                    Distance:Distance,
+                    Capacity:Capacity
+
+                };
+                //Call the services
+                $http.post('http://localhost:53346/api/Bus/PostBus', JSON.stringify(data))
+                    .then(function (response) {
+                        if (response.data)
+                            
+                        $scope.msg = "Post Data Submitted Successfully!";
+                    },
+                function (response) {
+                    $scope.msg = "Service not Exists";
+                    $scope.statusval = response.status;
+                    $scope.statustext = response.statusText;
+                    $scope.headers = response.headers();
+                });
+            };
+        });
+    </script>
+</head>
+
+<body>
+    <div ng-app="BusReservationApp" ng-controller="BusController">
+        <div>
+          Source : <input type="text" ng-model="Source" required><br /><br />
+           Destination : <input type="text" ng-model="Destination" required><br /><br />
+            Company Name  : <input type="text" ng-model="CompanyName" required><br /><br />
+            Category: <input type="text" ng-model="Category" required><br /><br />
+            Arrival Time : <input type="text" ng-model="ArrivalTime" required><br /><br />
+            Departure Time: <input type="text" ng-model="DepartureTime" required><br /><br />
+            Bus Available on Days: <input type="text" ng-model="BusAvailable" required><br /><br />
+            Distance : <input type="text" ng-model=" Distance" required><br /><br />
+            Capacity : <input type="text" ng-model=" Capacity" required><br /><br />
+            <input type="button" value="Send" ng-click="postdata(Source,Destination,BusAvailable,ArrivalTime,DepartureTime,CompanyName,Category,Distance,Capacity)" /> <br /><br />
+        </div>
+
+
+
+        <p>Output Message : {{msg}}</p>
+        <p>StatusCode: {{statusval}}</p>
+        <p>Status: {{statustext}}</p>
+        <p>Response Headers: {{headers}}</p>
+
+
+    </div>
+</body>
+</html>
